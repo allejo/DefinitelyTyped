@@ -1,4 +1,6 @@
 /// <reference types="node" />
+// noinspection BadExpressionStatementJS
+
 import * as chai from 'chai';
 
 const expect = chai.expect;
@@ -1517,9 +1519,29 @@ suite('assert', () => {
     });
 
     test('instanceOf', () => {
-        assert.instanceOf(new Foo(), Foo);
-        assert.instanceOf(5, Foo);
-        assert.instanceOf(new CrashyObject(), CrashyObject);
+        {
+            const value = new Foo();
+            assert.instanceOf(value, Foo);
+
+            // $ExpectType Foo
+            value;
+        }
+
+        {
+            const value = 5 as number;
+            assert.instanceOf(5, Foo);
+
+            // $ExpectType never
+            value;
+        }
+
+        {
+            const value = new CrashyObject();
+            assert.instanceOf(value, CrashyObject);
+
+            // $ExpectType CrashyObject
+            value;
+        }
     });
 
     test('notInstanceOf', () => {
@@ -1670,6 +1692,22 @@ suite('assert', () => {
             // $ExpectType never
             value;
         }
+
+        {
+            const value = 12345 as number;
+            assert.isNotNull(value);
+
+            // $ExpectType number
+            value;
+        }
+
+        {
+            const value = { a: 'b' };
+            assert.isNotNull(value);
+
+            // $ExpectType { a: string; }
+            value;
+        }
     });
 
     test('isUndefined', () => {
@@ -1696,13 +1734,52 @@ suite('assert', () => {
     });
 
     test('isNaN', () => {
-        assert.isNaN(NaN);
-        assert.isNaN(12);
+        {
+            const value = NaN;
+            assert.isNaN(value);
+
+            // $ExpectType number
+            value;
+        }
+
+        {
+            const value = 12 as number;
+            assert.isNaN(value);
+
+            // $ExpectType number
+            value;
+        }
     });
 
     test('isNotNaN', () => {
         assert.isNotNaN(12);
         assert.isNotNaN(NaN);
+    });
+
+    test('exists', () => {
+        {
+            const value = true as boolean;
+            assert.exists(value);
+
+            // $ExpectType boolean
+            value;
+        }
+
+        {
+            const value = "hello world" as string | null;
+            assert.exists(value);
+
+            // $ExpectType string
+            value;
+        }
+
+        {
+            const value = 12345 as number | undefined;
+            assert.exists(value);
+
+            // $ExpectType number
+            value;
+        }
     });
 
     test('isFunction', () => {
@@ -1719,52 +1796,212 @@ suite('assert', () => {
     });
 
     test('isArray', () => {
-        assert.isArray([]);
-        assert.isArray(new Array<any>());
-        assert.isArray({});
+        {
+            const value: any[] = [];
+            assert.isArray(value);
+
+            // $ExpectType any[]
+            value;
+        }
+
+        {
+            const value = new Array<any>();
+            assert.isArray(value);
+
+            // $ExpectType any[]
+            value;
+        }
+
+        {
+            const value = {};
+            assert.isArray(value);
+
+            // $ExpectType never
+            value;
+        }
     });
 
     test('isNotArray', () => {
-        assert.isNotArray(3);
-        assert.isNotArray([]);
-        assert.isNotArray(new Array<any>());
+        {
+            const value = 3 as number;
+            assert.isNotArray(value);
+
+            // $ExpectType number
+            value;
+        }
+
+        {
+            const value: any[] = [];
+            assert.isNotArray(value);
+
+            // $ExpectType never
+            value;
+        }
+
+        {
+            const value = new Array<any>();
+            assert.isNotArray(value);
+
+            // $ExpectType never
+            value;
+        }
     });
 
     test('isString', () => {
-        assert.isString('Foo');
-        // tslint:disable-next-line:no-construct
-        assert.isString(new String('foo'));
-        assert.isString(1);
+        {
+            const value = 'Foo' as string;
+            assert.isString(value);
+
+            // $ExpectType string
+            value;
+        }
+
+        {
+            // tslint:disable-next-line:no-construct
+            const value = new String('foo');
+            assert.isString(value);
+
+            // $ExpectType String
+            value;
+        }
+
+        {
+            const value = 1 as number;
+            assert.isString(value);
+
+            // $ExpectType never
+            value;
+        }
     });
 
     test('isNotString', () => {
-        assert.isNotString(3);
-        assert.isNotString(['hello']);
-        assert.isNotString('hello');
+        {
+            const value = 3 as number;
+            assert.isNotString(value);
+
+            // $ExpectType number
+            value;
+        }
+
+        {
+            const value = ['hello'];
+            assert.isNotString(value);
+
+            // $ExpectType string[]
+            value;
+        }
+
+        {
+            const value = 'hello' as string;
+            assert.isNotString(value);
+
+            // $ExpectType never
+            value;
+        }
     });
 
     test('isNumber', () => {
-        assert.isNumber(1);
-        assert.isNumber(Number('3'));
-        assert.isNumber('1');
+        {
+            const value = 1 as number;
+            assert.isNumber(value);
+
+            // $ExpectType
+            value;
+        }
+
+        {
+            const value = Number('3');
+            assert.isNumber(value);
+
+            // $ExpectType number
+            value;
+        }
+
+        {
+            const value = '1' as string;
+            assert.isNumber(value);
+
+            // $ExpectType never
+            value;
+        }
     });
 
     test('isNotNumber', () => {
-        assert.isNotNumber('hello');
-        assert.isNotNumber([5]);
-        assert.isNotNumber(4);
+        {
+            const value = 'hello' as string;
+            assert.isNotNumber(value);
+
+            // $ExpectType string
+            value;
+        }
+
+        {
+            const value = [5];
+            assert.isNotNumber(value);
+
+            // $ExpectType number[]
+            value;
+        }
+
+        {
+            const value = 4 as number;
+            assert.isNotNumber(value);
+
+            // $ExpectType never
+            value;
+        }
     });
 
     test('isBoolean', () => {
-        assert.isBoolean(true);
-        assert.isBoolean(false);
-        assert.isBoolean('1');
+        {
+            const value = true as boolean;
+            assert.isBoolean(value);
+
+            // $ExpectType
+            value;
+        }
+
+        {
+            const value = false as boolean;
+            assert.isBoolean(value);
+
+            // $ExpectType boolean
+            value;
+        }
+
+        {
+            const value = '1' as string;
+            assert.isBoolean(value);
+
+            // $ExpectType never
+            value;
+        }
     });
 
     test('isNotBoolean', () => {
-        assert.isNotBoolean('true');
-        assert.isNotBoolean(true);
-        assert.isNotBoolean(false);
+        {
+            const value = 'true' as string;
+            assert.isNotBoolean(value);
+
+            // $ExpectType string
+            value;
+        }
+
+        {
+            const value = true;
+            assert.isNotBoolean(value);
+
+            // $ExpectType never
+            value;
+        }
+
+        {
+            const value = false;
+            assert.isNotBoolean(value);
+
+            // $ExpectType never
+            value;
+        }
     });
 
     test('include', () => {
@@ -1860,7 +2097,7 @@ suite('assert', () => {
     test('property', () => {
         const obj = {foo: {bar: 'baz'}};
         const simpleObj = {foo: 'bar'} as any;
-        assert.property(obj, 'foo');
+
         assert.deepProperty(obj, 'foo.bar');
         assert.notDeepProperty(obj, 'foo.baz');
         assert.deepPropertyVal(obj, 'foo.bar', 'baz');
@@ -1873,6 +2110,26 @@ suite('assert', () => {
         assert.deepPropertyVal(obj, 'foo.bar', 'ball');
         assert.notPropertyVal(simpleObj, 'foo', 'bar');
         assert.notDeepPropertyVal(simpleObj, 'foo.bar', 'baz');
+
+        {
+            const createObj = (key: string, value: unknown): Record<string, unknown> => ({ [key]: value });
+            const dynamic = createObj('foo', 'bar');
+
+            assert.property<number>(dynamic, 'foo');
+            assert.property<boolean>(dynamic, 'bar');
+
+            // $ExpectType number
+            dynamic.foo;
+
+            // $ExpectType never
+            dynamic.nonexistent;
+
+            // $ExpectType boolean
+            dynamic.bar;
+
+            // $ExpectType Record<string, unknown> & { foo: number }
+            dynamic;
+        }
     });
 
     test('throws', () => {
