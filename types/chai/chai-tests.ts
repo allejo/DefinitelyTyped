@@ -1413,10 +1413,37 @@ suite('assert', () => {
     });
 
     test('isTrue', () => {
-        assert.isTrue(true);
-        assert.isTrue(false);
-        assert.isTrue(1);
-        assert.isTrue('test');
+        {
+            const variable = true;
+            assert.isTrue(variable);
+
+            // $ExpectType true
+            variable;
+        }
+
+        {
+            const variable = false;
+            assert.isTrue(variable);
+
+            // $ExpectType never
+            variable;
+        }
+
+        {
+            const variable = 1;
+            assert.isTrue(variable);
+
+            // $ExpectType never
+            variable;
+        }
+
+        {
+            const variable = 'test';
+            assert.isTrue(variable);
+
+            // $ExpectType never
+            variable;
+        }
     });
 
     test('ok', () => {
@@ -1444,9 +1471,29 @@ suite('assert', () => {
     });
 
     test('isFalse', () => {
-        assert.isFalse(false);
-        assert.isFalse(true);
-        assert.isFalse(0);
+        {
+            const value = false;
+            assert.isFalse(value);
+
+            // $ExpectType false
+            value;
+        }
+
+        {
+            const value = true;
+            assert.isFalse(value);
+
+            // $ExpectType never
+            value;
+        }
+
+        {
+            const value = 0;
+            assert.isFalse(value);
+
+            // $ExpectType never
+            value;
+        }
     });
 
     test('finite', () => {
@@ -1590,18 +1637,57 @@ suite('assert', () => {
     });
 
     test('isNull', () => {
-        assert.isNull(null);
-        assert.isNull(undefined);
+        {
+            const value = null;
+            assert.isNull(value);
+
+            // $ExpectType null
+            value;
+        }
+
+        {
+            const value = undefined;
+            assert.isNull(value);
+
+            // $ExpectType never
+            value;
+        }
     });
 
     test('isNotNull', () => {
-        assert.isNotNull(undefined);
-        assert.isNotNull(null);
+        {
+            const value = undefined;
+            assert.isNotNull(value);
+
+            // $ExpectType undefined
+            value;
+        }
+
+        {
+            const value = null;
+            assert.isNotNull(value);
+
+            // $ExpectType never
+            value;
+        }
     });
 
     test('isUndefined', () => {
-        assert.isUndefined(undefined);
-        assert.isUndefined(null);
+        {
+            const value = undefined;
+            assert.isUndefined(value);
+
+            // $ExpectType undefined
+            value;
+        }
+
+        {
+            const value = null;
+            assert.isUndefined(value);
+
+            // $ExpectType never
+            value;
+        }
     });
 
     test('isDefined', () => {
