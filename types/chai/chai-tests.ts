@@ -2097,6 +2097,7 @@ suite('assert', () => {
     test('property', () => {
         const obj = {foo: {bar: 'baz'}};
         const simpleObj = {foo: 'bar'} as any;
+        assert.property(obj, 'foo');
 
         assert.deepProperty(obj, 'foo.bar');
         assert.notDeepProperty(obj, 'foo.baz');
@@ -2110,26 +2111,6 @@ suite('assert', () => {
         assert.deepPropertyVal(obj, 'foo.bar', 'ball');
         assert.notPropertyVal(simpleObj, 'foo', 'bar');
         assert.notDeepPropertyVal(simpleObj, 'foo.bar', 'baz');
-
-        {
-            const createObj = (key: string, value: unknown): Record<string, unknown> => ({ [key]: value });
-            const dynamic = createObj('foo', 'bar');
-
-            assert.property<number>(dynamic, 'foo');
-            assert.property<boolean>(dynamic, 'bar');
-
-            // $ExpectType number
-            dynamic.foo;
-
-            // $ExpectType never
-            dynamic.nonexistent;
-
-            // $ExpectType boolean
-            dynamic.bar;
-
-            // $ExpectType Record<string, unknown> & { foo: number }
-            dynamic;
-        }
     });
 
     test('throws', () => {

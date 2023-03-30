@@ -1101,7 +1101,7 @@ declare namespace Chai {
          * @param property   Potential contained property of object.
          * @param message   Message to display on error.
          */
-        property<V = any, T = any, K extends string = string>(object: T, property: K, message?: string): asserts object is T & {[K]: V};
+        property<T>(object: T, property: string /* keyof T */, message?: string): void;
 
         /**
          * Asserts that object does not have a property named by property.
